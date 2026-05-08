@@ -438,11 +438,26 @@
             const clickedCard = document.querySelector(`article[onclick*="${articleId}"]`);
             
             if(contentDiv && clickedCard) {
-                document.getElementById('article-modal-title').innerText = clickedCard.querySelector('[itemprop="headline"]').innerText;
-                document.getElementById('article-modal-category').innerText = clickedCard.querySelector('[itemprop="articleSection"]').innerText;
-                document.getElementById('article-modal-author').innerText = clickedCard.querySelector('meta[itemprop="author"]').content;
-                document.getElementById('article-modal-date').innerText = clickedCard.querySelector('[itemprop="datePublished"]').innerText;
-                document.getElementById('article-modal-img').src = clickedCard.querySelector('[itemprop="image"]').src;
+                const titleNode = clickedCard.querySelector('[itemprop="headline"]');
+                if (titleNode) document.getElementById('article-modal-title').innerText = titleNode.innerText;
+                
+                const categoryNode = clickedCard.querySelector('[itemprop="articleSection"]');
+                if (categoryNode) document.getElementById('article-modal-category').innerText = categoryNode.innerText;
+                
+                const authorNode = clickedCard.querySelector('meta[itemprop="author"]');
+                if (authorNode) document.getElementById('article-modal-author').innerText = authorNode.content;
+                
+                const dateNode = clickedCard.querySelector('[itemprop="datePublished"]');
+                const modalDate = document.getElementById('article-modal-date');
+                if (dateNode && modalDate) {
+                    modalDate.innerText = dateNode.innerText;
+                    modalDate.parentElement.style.display = 'flex';
+                } else if (modalDate) {
+                    modalDate.parentElement.style.display = 'none';
+                }
+                
+                const imgNode = clickedCard.querySelector('[itemprop="image"]');
+                if (imgNode) document.getElementById('article-modal-img').src = imgNode.src;
                 
                 document.getElementById('article-modal-body').innerHTML = contentDiv.innerHTML;
                 
